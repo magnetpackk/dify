@@ -1,4 +1,4 @@
-name: Build & Push Dify Docker Images (新版适配)
+name: Build & Push Dify Docker Images (修复版)
 on:
   push:
     branches: [ main ]
@@ -20,20 +20,20 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 1. 构建并推送API镜像（包含Worker、WebSocket功能）
+      # 1. 构建并推送API镜像（上下文改为根目录，Dockerfile路径不变）
       - name: Build and push API
         uses: docker/build-push-action@v5
         with:
-          context: ./api  # 关键：上下文改为api目录
-          file: ./api/Dockerfile  # 新版路径
+          context: .  # 关键：上下文改为项目根目录，能访问到dify-agent/
+          file: ./api/Dockerfile  # Dockerfile路径保持不变
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/dify-api:custom
 
-      # 2. 构建并推送Web前端镜像
+      # 2. 构建并推送Web前端镜像（同步修改上下文为根目录）
       - name: Build and push Web
         uses: docker/build-push-action@v5
         with:
-          context: ./web  # 关键：上下文改为web目录
-          file: ./web/Dockerfile  # 新版路径
+          context: .  # 上下文改为项目根目录
+          file: ./web/Dockerfile  # Dockerfile路径保持不变
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/dify-web:custom
