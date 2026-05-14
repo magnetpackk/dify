@@ -24,6 +24,7 @@ RUN apt-get update \
 # Install Python dependencies (workspace members under providers/vdb/)
 COPY api/pyproject.toml api/uv.lock ./
 COPY api/providers ./providers
+COPY dify-agent ../dify-agent
 RUN uv sync --locked --no-dev
 
 # production stage
