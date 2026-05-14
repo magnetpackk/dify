@@ -22,8 +22,8 @@ RUN apt-get update \
           libmpfr-dev libmpc-dev
 
 # Install Python dependencies (workspace members under providers/vdb/)
-COPY pyproject.toml uv.lock ./
-COPY providers ./providers
+COPY api/pyproject.toml api/uv.lock ./
+COPY api/providers ./providers
 RUN uv sync --locked --no-dev
 
 # production stage
